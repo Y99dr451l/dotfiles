@@ -1,0 +1,5 @@
+[mgr]
+prepend_keymap = [
+	{ on = "<S-Down>", run = "seek 5", desc = "Seek down 5 lines in preview" },
+	{ on = "<S-Up>", run = "seek -5", desc = "Seek up 5 lines in preview" },
+]

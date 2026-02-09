@@ -1,0 +1,73 @@
+# ~/.zshrc
+
+[[ $- != *i* ]] && return
+
+export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+
+### ALIASES
+alias ls='ls --color=auto --group-directories-first'
+alias ll='ls --color=auto -l --group-directories-first'
+alias grep='grep --color=auto'
+alias icat='kitten icat'
+alias cclip='xclip -sel clip'
+PS1='[\u@\h \W]\$ '
+export FZF_DEFAULT_OPTS="-e --height 12 --layout reverse --border --style default --inline-info"
+
+### KEY BINDINGS
+bindkey -e
+bindkey '\e[A' history-search-backward # replaced by zsh-autocomplete
+bindkey '\e[B' history-search-forward
+bindkey '^[[1;5D' backward-word
+bindkey '^[[1;5C' forward-word
+bindkey '^[[H' beginning-of-line
+bindkey '^[[F' end-of-line
+bindkey '^H' backward-kill-word
+
+### HISTORY
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=100000
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY
+
+### YAZI
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	command yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+### OH-MY-ZSH
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_COLORIZE_STYLE="monokai"
+fpath+=$ZSH/custom/plugins/zsh-completions/src
+autoload -U compinit && compinit # zsh-completions
+plugins=(
+	git
+	fzf
+	sudo
+	colorize
+	dirhistory
+	web-search
+	alias-finder
+	colored-man-pages
+	command-not-found
+	zsh-autosuggestions
+)
+source $ZSH/oh-my-zsh.sh
+
+### EVALS
+eval "$(pyenv init - zsh)"
+eval "$(zoxide init zsh)"
+eval "$(starship init zsh)"
+eval "$(fzf --zsh)"
+eval "$(thefuck --alias)"
+
+### CBONSAI (VERY IMPORTANT)
+cbonsai -p | sed -E 's/\x1b\[[0-9]+-[0-9]+m//g' # cbonsai contains invalid escape seqs and kitty doesn't ignore them

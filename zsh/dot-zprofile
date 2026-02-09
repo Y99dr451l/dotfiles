@@ -1,0 +1,15 @@
+# ~/.zprofile
+
+typeset -U path PATH
+path=(
+	$HOME/.local/bin
+	$HOME/.spicetify
+	$HOME/.pyenv/bin
+	$path
+)
+
+export LIBVIRT_DEFAULT_URI="qemu:///system"
+export VCPKG_ROOT="$HOME/.local/share/vcpkg"
+export VCPKG_TARGET_TRIPLET="x64-linux"
+export PYENV_ROOT="$HOME/.pyenv"
+export EDITOR="micro"

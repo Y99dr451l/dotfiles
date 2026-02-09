@@ -1,0 +1,6 @@
+^README\.md$
+\.git
+\.config/micro/backups
+\.config/micro/buffers
+\.config/micro/plug
+\wallpapers

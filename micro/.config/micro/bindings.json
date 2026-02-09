@@ -1,0 +1,19 @@
+{
+    "Alt-/": "lua:comment.comment",
+    "Alt-d": "command:definition",
+    "Alt-f": "command:format",
+    "Alt-k": "command:hover",
+    "Alt-r": "command:references",
+    "CtrlSpace": "command:lspcompletion",
+    "CtrlUnderscore": "lua:comment.comment",
+    "Alt-1": "command:tabswitch 1",
+    "Alt-2": "command:tabswitch 2",
+    "Alt-3": "command:tabswitch 3",
+    "Alt-4": "command:tabswitch 4",
+    "Alt-5": "command:tabswitch 5",
+    "Alt-6": "command:tabswitch 6",
+    "Alt-7": "command:tabswitch 7",
+    "Alt-8": "command:tabswitch 8",
+    "Alt-9": "command:tabswitch 9",
+    "Alt-0": "command:tabswitch -1"
+}

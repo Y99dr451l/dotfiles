@@ -1,0 +1,19 @@
+{
+    "autoclose": false,
+    "autosu": true,
+    "colorscheme": "twilight",
+    "diffgutter": true,
+    "divchars": "-|",
+    "eofnewline": false,
+    "hltaberrors": true,
+    "hltrailingws": true,
+    "literate": false,
+    "lsp.autocompleteDetails": true,
+    "lsp.formatOnSave": false,
+    "lsp.server": "cpp=clangd",
+    "matchbracestyle": "highlight",
+    "mkparents": true,
+    "rmtrailingws": true,
+    "scrollbar": true,
+    "softwrap": true
+}
