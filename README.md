@@ -1,4 +1,5 @@
-Usage:
 - clone this repo
-- delete all files in `~/.config/` that are present in this repo
+- install `kitty`, `micro`, `zsh`, `starship`, `yazi`
+- install `oh-my-zsh`, `zsh-completions` and `zsh-autosuggestions` following the instructions on their repos
+- delete all files in `~` and `~/.config/` that are present in this repo
 - run `stow.sh` in this repo; this creates symlinks to `~/.config/`
