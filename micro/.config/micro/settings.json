@@ -1,4 +1,5 @@
 {
+	"autoclose": true,
 	"autosu": true,
 	"colorscheme": "twilight",
 	"diffgutter": true,
