@@ -1,2 +1,2 @@
 #!/bin/bash
-stow --dotfiles -t ~ kitty micro starship zsh yazi
+stow --dotfiles -t ~ kitty micro starship zsh yazi hypr waybar
