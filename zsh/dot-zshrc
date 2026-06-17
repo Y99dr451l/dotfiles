@@ -54,7 +54,7 @@ function y() {
 
 ### OH-MY-ZSH
 zstyle ':omz:*' aliases false # don't let omz override aliases from this file
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="/usr/share/oh-my-zsh"
 ZSH_COLORIZE_STYLE="monokai"
 DISABLE_MAGIC_FUNCTIONS="true"
 ENABLE_CORRECTION="true"
