@@ -1,8 +1,7 @@
 {
+	// "output": "DP-3",
 	"layer": "top",
 	"position": "top",
-	// "height": "30",
-	// "width": "2560",
 	"modules-left": [
 		"hyprland/workspaces"
 	],
@@ -10,13 +9,23 @@
 		"hyprland/window"
 	],
 	"modules-right": [
+		"cava",
+		"custom/blank",
 		"systemd-failed-units",
-		"network",
+		// "custom/brightness",
+		"pulseaudio",
+		// "network",
+		"memory",
 		"cpu",
 		"battery",
-		"clock"
+		"custom/clock"
 	],
 
+	"clock": {
+		"format": "{:%H:%M}",
+		"tooltip": true,
+		"tooltip-format": "{:%a %d/%m/%Y}"
+	},
 	"hyprland/workspaces": {
 		"format": "{icon} {windows}",
 		"workspace-taskbar": {
@@ -42,7 +51,55 @@
 	},
 	"cpu": {
 		"interval": 5,
-		"format": "{usage}% {icon0}{icon1}{icon2}{icon3}{icon4}{icon5}{icon6}{icon7}{icon8}{icon9}{icon10}{icon11}{icon12}{icon13}{icon14}{icon15}",
+		// "format": "{usage}% {icon0}{icon1}{icon2}{icon3}{icon4}{icon5}{icon6}{icon7}{icon8}{icon9}{icon10}{icon11}{icon12}{icon13}{icon14}{icon15}",
+		"format": "{icon} {usage}%",
 		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
 	},
+	"memory": {
+		"interval": 5,
+		"format": "{icon} {percentage}%",
+		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
+	},
+	"cava": {
+		"framerate": 30,
+		"method": "raw",
+		"autosens": 0,
+		"sensitivity": 1,
+		"bars": 14,
+		"lower_cutoff_freq": 40,
+		"higher_cutoff_freq": 16000,
+		"sleep_timer": 2,
+		"hide_on_silence": true,
+		"method": "pipewire",
+		"stereo": false,
+		"bar_delimiter": 0,
+		"noise_reduction": 0.77,
+		"input_delay": 2,
+		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+		"actions": { "on-click-right": "mode" }
+	},
+
+	// CUSTOM
+	"custom/clock": {
+		"interval": 5,
+		"tooltip": false,
+		"format": " {text} ",
+		"exec": "sh -c 'echo \"$(uptime | cut -F4 | cut -d',' -f1) / $(date +%H:%M)\"'"
+	},
+	"custom/brightness": {
+		"signal": 8,
+		"interval": 3600,
+		"return-type": "json",
+		"format": " {text} ",
+		"exec": "~/.config/waybar/scripts/brightness.sh get",
+		"on_click_middle": "~/.config/waybar/scripts/brightness.sh sync",
+		"on-scroll-up": "~/.config/waybar/scripts/brightness.sh up",
+		"on-scroll-down": "~/.config/waybar/scripts/brightness.sh down",
+		"on-click": "~/.config/waybar/scripts/brightness.sh offset-",
+		"on-click-right": "~/.config/waybar/scripts/brightness.sh offset+"
+	},
+	"custom/blank": {
+		"format": "          ",
+		"tooltip": false
+	}
 }

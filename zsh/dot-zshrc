@@ -59,7 +59,7 @@ function y() {
 }
 
 ### OH-MY-ZSH
-# zstyle ':omz:*' aliases false # don't let omz override aliases from this file
+zstyle ':omz:*' aliases false # don't let omz override aliases from this file
 export ZSH="/usr/share/oh-my-zsh"
 ZSH_COLORIZE_STYLE="monokai"
 DISABLE_MAGIC_FUNCTIONS="true"
@@ -73,11 +73,8 @@ plugins=(
 	sudo
 	colorize
 	# dirhistory
-	# web-search
 	# alias-finder
 	colored-man-pages
-	# command-not-found
-	# zsh-autosuggestions
 )
 source $ZSH/oh-my-zsh.sh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
