@@ -2,9 +2,9 @@
 local monitor1 = "desc:LG Electronics LG ULTRAGEAR 303MANJBZK27"
 local monitor2 = "desc:ASUSTek COMPUTER INC PA24A J9LMQS047326"
 local monitor3 = "desc:BOE 0x0B6A"
-hl.monitor({ output = monitor1, mode = "2560x1440@143.97Hz", position = "0x0", scale = "1", vrr = 1 })
-hl.monitor({ output = monitor2, mode = "1920x1200@59.95Hz", position = "-1920x150", scale = "1" })
-hl.monitor({ output = monitor3, mode = "2560x1440@120.00Hz", position = "0x1440", scale = "1.25" })
+hl.monitor({ output = monitor1, mode = "2560x1440@144", position = "0x0", scale = "1", vrr = 0 })
+hl.monitor({ output = monitor2, mode = "1920x1200@60", position = "-1920x150", scale = "1" })
+hl.monitor({ output = monitor3, mode = "2560x1440@120", position = "0x1440", scale = "1.25" })
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 
 -- AUTOSTART
@@ -29,6 +29,8 @@ hl.on("hyprland.shutdown", function () hl.exec_cmd("kill -9 \"$(cat /tmp/.hyprla
 -- ENV
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("QT_QPA_PLATFORM", "wayland")
+hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
 
 -- PERMS
 hl.config({ ecosystem = { enforce_permissions = true } })
@@ -45,6 +47,9 @@ hl.window_rule({ name = "steam", match = { class = "steam"}, workspace = "3" })
 hl.window_rule({ name = "vesktop", match = { class = "vesktop" }, workspace = "6" })
 hl.window_rule({ name = "spotify", match = { class = "Spotify" }, workspace = "7" })
 hl.window_rule({ name = "suppress-maximize-events",	match = { class = ".*" }, suppress_event = "maximize" })
+hl.window_rule({ name = "youtube", match = { class = "firefox", title = ".*YouTube.*" }, opacity = "1. override" })
+hl.window_rule({ name = "vesktop-fs", match = { class = "vesktop" }, opacity = "1. override" })
+hl.window_rule({ name = "pop-out", match = { class = "firefox", title = "Picture-in-Picture" }, float = true })
 hl.window_rule({
 	name = "fix-xwayland-drags",
 	match = { class = "^$", title = "^$", xwayland = true, float = true, fullscreen = false, pin = false },
@@ -57,7 +62,6 @@ local fileManager = "dolphin"
 local menu = "hyprlauncher"
 local uwsm = "uwsm app -- "
 local mainMod = "SUPER"
-local specialMod = "dead_circumflex"
 ---- execs
 hl.bind("XF86PowerOff", hl.dsp.exec_cmd("systemctl suspend"))
 hl.bind(mainMod .. " + XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'shutdown 0'"))
@@ -68,6 +72,7 @@ hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(uwsm .. terminal))
 hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd(uwsm .. terminal .. " -o confirm_os_window_close=0 btop"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(uwsm .. fileManager))
+-- hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(uwsm .. terminal .. " -o confirm_os_window_close=0 y"))
 hl.bind(mainMod .. " + Super_L", hl.dsp.exec_cmd(uwsm .. menu))
 hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | wl-copy'))
@@ -95,21 +100,36 @@ hl.bind(mainMod .. " + SHIFT + left",  hl.dsp.window.move({ direction = "left" }
 hl.bind(mainMod .. " + SHIFT + right", hl.dsp.window.move({ direction = "right" }))
 hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ direction = "up" }))
 hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ direction = "down" }))
+hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
+hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
+hl.bind(mainMod .. " + dead_circumflex", hl.dsp.workspace.toggle_special("magic"))
+hl.bind(mainMod .. " + SHIFT + dead_circumflex", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
+hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
+-- hl.bind(mainMod .. " + P", hl.dsp.window.pin())
 hl.bind(mainMod .. " + CTRL + left",  hl.dsp.focus({ workspace = "e-1" }))
 hl.bind(mainMod .. " + CTRL + right", hl.dsp.focus({ workspace = "e+1" }))
+-- for i = 1, 10 do
+-- 	hl.bind(mainMod .. " + " .. i % 10, function()
+-- 		if i > 5 or #hl.get_monitors() < 2 then
+-- 			hl.dispatch(hl.dsp.focus({ workspace = i })) return
+-- 		end
+-- 		if hl.get_active_workspace().id > 5 then
+-- 			hl.dispatch(hl.dsp.focus({ workspace = i }))
+-- 			hl.dispatch(hl.dsp.focus({ workspace = (i + 5) % 10 }))
+-- 		else
+-- 			hl.dispatch(hl.dsp.focus({ workspace = (i + 5) % 10 }))
+-- 			hl.dispatch(hl.dsp.focus({ workspace = i }))
+-- 		end
+-- 	end)
+-- end
 for i = 1, 10 do
 	local key = i % 10
 	hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i }))
 	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
--- hl.bind(mainMod .. " + P", hl.dsp.window.pin())
-hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))
-hl.bind(mainMod .. " + " .. specialMod, hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + " .. specialMod, hl.dsp.window.move({ workspace = "special:magic" }))
-hl.bind(mainMod .. " + mouse_down", hl.dsp.focus({ workspace = "e+1" }))
-hl.bind(mainMod .. " + mouse_up", hl.dsp.focus({ workspace = "e-1" }))
-hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
-hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+
 ---- zoom
 local function zoom(factor)
 	hl.config({ cursor = { zoom_factor = math.max(1., math.min(5., hl.get_config("cursor.zoom_factor") * factor)) }})
@@ -146,10 +166,10 @@ hl.curve("easeInOutCubic", { type = "bezier", points = {{0.65, 0.05}, {0.36, 1}}
 hl.curve("linear", { type = "bezier", points = {{0, 0}, {1, 1}}})
 hl.curve("almostLinear", { type = "bezier", points = {{0.5, 0.5}, {0.75, 1}}})
 hl.curve("quick", { type = "bezier", points = {{0.15, 0}, {0.1, 1}}})
-hl.curve("easy", { type = "spring", mass = 1, stiffness = 71.2633, dampening = 15.8273644 })
+hl.curve("easy", { type = "spring", mass = 1, stiffness = 70., dampening = 16. })
 hl.animation({ leaf = "global", enabled = true, speed = 10, bezier = "default" })
 hl.animation({ leaf = "border", enabled = true, speed = 5.39, bezier = "easeOutQuint" })
-hl.animation({ leaf = "windows", enabled = true, speed = 4.79, spring = "easy" })
+hl.animation({ leaf = "windows", enabled = true, speed = 10, spring = "easy" })
 hl.animation({ leaf = "windowsIn", enabled = true, speed = 4.1, spring = "easy", style = "popin 87%" })
 hl.animation({ leaf = "windowsOut", enabled = true, speed = 1.49, bezier = "linear", style = "popin 87%" })
 hl.animation({ leaf = "fadeIn", enabled = true, speed = 1.73, bezier = "almostLinear" })

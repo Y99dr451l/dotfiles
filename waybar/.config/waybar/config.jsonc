@@ -21,11 +21,6 @@
 		"custom/clock"
 	],
 
-	"clock": {
-		"format": "{:%H:%M}",
-		"tooltip": true,
-		"tooltip-format": "{:%a %d/%m/%Y}"
-	},
 	"hyprland/workspaces": {
 		"format": "{icon} {windows}",
 		"workspace-taskbar": {
@@ -62,7 +57,7 @@
 	},
 	"cava": {
 		"framerate": 30,
-		"method": "raw",
+		"method": "sdl_glsl",
 		"autosens": 0,
 		"sensitivity": 1,
 		"bars": 14,
@@ -71,21 +66,29 @@
 		"sleep_timer": 2,
 		"hide_on_silence": true,
 		"method": "pipewire",
-		"stereo": false,
+		"stereo": true,
 		"bar_delimiter": 0,
 		"noise_reduction": 0.77,
 		"input_delay": 2,
-		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+		"format-icons": [" ", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+		// "format-icons": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"],
 		"actions": { "on-click-right": "mode" }
 	},
+	// "cava": {
+	// 	"cava_config": "$XDG_CONFIG_HOME/cava/waybar.conf",
+	// 	"input_delay": 0,
+	// 	"actions": { "on-click-right": "mode" }
+	// },
 
 	// CUSTOM
 	"custom/clock": {
 		"interval": 5,
-		"tooltip": false,
+		"tooltip": true,
+		"return-type": "json",
 		"format": " {text} ",
-		"exec": "sh -c 'echo \"$(uptime | cut -F4 | cut -d',' -f1) / $(date +%H:%M)\"'"
+		"exec": "~/.config/waybar/scripts/clock.sh"
 	},
+
 	"custom/brightness": {
 		"signal": 8,
 		"interval": 3600,
