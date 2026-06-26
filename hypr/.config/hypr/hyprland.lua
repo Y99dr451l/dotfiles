@@ -8,19 +8,17 @@ hl.monitor({ output = monitor3, mode = "2560x1440@120", position = "0x1440", sca
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 
 -- AUTOSTART
-restart = function(...)
-	for i, v in ipairs({...}) do hl.exec_cmd("pkill " .. tostring(v) .. "; " .. tostring(v))
-end end
-start = function(...)
-	for i, v in ipairs({...}) do hl.exec_cmd("pidof " .. tostring(v) .. " || " .. tostring(v))
-end end
-
+local restart = function(...)	for _, v in ipairs({...}) do hl.exec_cmd("pkill " .. tostring(v) .. "; " .. tostring(v)) end end
+local start = function(...) for _, v in ipairs({...}) do hl.exec_cmd("pidof " .. tostring(v) .. " || " .. tostring(v)) end end
 hl.on("hyprland.start", function()
 	restart("waybar", "hyprpaper", "hypridle", "hyprsunset", "syncthing")
+	hl.exec_cmd("easyeffects --service-mode -w")
+	hl.exec_cmd("wl-paste --watch cliphist store")
 end)
 hl.on("config.reloaded", function()
 	restart("waybar", "hyprpaper")
 	start("hypridle", "hyprsunset", "syncthing")
+	hl.exec_cmd("pkill walker; walker --gapplication-service")
 end)
 ---- https://github.com/hyprwm/Hyprland/issues/2614
 hl.exec_cmd("systemd-inhibit --who=\"Hyprland config\" --why=\"wlogout keybind\" --what=handle-power-key --mode=block sleep infinity & echo $! > /tmp/.hyprland-systemd-inhibit")
@@ -47,9 +45,10 @@ hl.window_rule({ name = "steam", match = { class = "steam"}, workspace = "3" })
 hl.window_rule({ name = "vesktop", match = { class = "vesktop" }, workspace = "6" })
 hl.window_rule({ name = "spotify", match = { class = "Spotify" }, workspace = "7" })
 hl.window_rule({ name = "suppress-maximize-events",	match = { class = ".*" }, suppress_event = "maximize" })
-hl.window_rule({ name = "youtube", match = { class = "firefox", title = ".*YouTube.*" }, opacity = "1. override" })
+hl.window_rule({ name = "youtube", match = { class = "firefox", title = ".*(YouTube|Watch2Gether).*" }, opacity = "1. override" })
 hl.window_rule({ name = "vesktop-fs", match = { class = "vesktop" }, opacity = "1. override" })
 hl.window_rule({ name = "pop-out", match = { class = "firefox", title = "Picture-in-Picture" }, float = true })
+hl.window_rule({ name = "float", match = { float = true }, center = true })
 hl.window_rule({
 	name = "fix-xwayland-drags",
 	match = { class = "^$", title = "^$", xwayland = true, float = true, fullscreen = false, pin = false },
@@ -59,23 +58,25 @@ hl.window_rule({
 -- KEYBINDS
 local terminal = "kitty"
 local fileManager = "dolphin"
-local menu = "hyprlauncher"
 local uwsm = "uwsm app -- "
 local mainMod = "SUPER"
----- execs
+---- power
 hl.bind("XF86PowerOff", hl.dsp.exec_cmd("systemctl suspend"))
 hl.bind(mainMod .. " + XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'shutdown 0'"))
 hl.bind(mainMod .. " + SHIFT + XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'shutdown -r 0'"))
--- hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || uwsm stop'"))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprshutdown"))
+---- walker
+hl.bind(mainMod .. " + V", hl.dsp.exec_cmd("cliphist list | walker --dmenu | cliphist decode | wl-copy"))
+hl.bind(mainMod .. " + Super_L", hl.dsp.exec_cmd("nc -U /run/user/1000/walker/walker.sock || (walker --gapplication-service && nc -U /run/user/1000/walker/walker.sock)"))
+---- execs
 hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(uwsm .. terminal))
 hl.bind(mainMod .. " + Escape", hl.dsp.exec_cmd(uwsm .. terminal .. " -o confirm_os_window_close=0 btop"))
 hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(uwsm .. fileManager))
 -- hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(uwsm .. terminal .. " -o confirm_os_window_close=0 y"))
-hl.bind(mainMod .. " + Super_L", hl.dsp.exec_cmd(uwsm .. menu))
 hl.bind("Print", hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | wl-copy'))
+hl.bind(mainMod .. " + U", hl.dsp.exec_cmd('kitty -o confirm_os_window_close=0 kitten unicode-input', { float = true }))
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true, repeating = true })
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true, repeating = true })
@@ -88,10 +89,10 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tru
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 ---- windows
 hl.bind(mainMod .. " + Q", hl.dsp.window.close())
-hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 hl.bind(mainMod .. " + W", hl.dsp.window.fullscreen_state({ internal = 1, client = 2, action = "toggle" }))
 hl.bind(mainMod .. " + SHIFT + W", hl.dsp.window.fullscreen({ action = "toggle" }))
-hl.bind("ALT + Tab", hl.dsp.focus({ last = true }))
+hl.bind(mainMod .. " + X", hl.dsp.window.float({ action = "toggle" }))
+-- hl.bind("ALT + Tab", hl.dsp.focus({ last = true }))
 hl.bind(mainMod .. " + left",  hl.dsp.focus({ direction = "left" }))
 hl.bind(mainMod .. " + right", hl.dsp.focus({ direction = "right" }))
 hl.bind(mainMod .. " + up",    hl.dsp.focus({ direction = "up" }))
@@ -136,7 +137,7 @@ local function zoom(factor)
 end
 hl.bind("SUPER + KP_ADD", function() zoom(1.2) end, { repeating = true })
 hl.bind("SUPER + KP_SUBTRACT", function() zoom(1. / 1.2) end, { repeating = true })
-hl.config({ input = { kb_layout = "de", follow_mouse = 2, sensitivity = 0, touchpad = { natural_scroll = false }}})
+hl.config({ input = { kb_layout = "de", follow_mouse = 2, float_switch_override_focus = 0, sensitivity = 0 }})
 hl.gesture({ fingers = 2, direction = "pinch", action = "cursorZoom", zoom_level = 1, mode = "live" })
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 

@@ -3,19 +3,19 @@
 [[ $- != *i* ]] && return
 
 export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:/opt/cuda/bin:$PATH
+# export FZF_DEFAULT_OPTS="-e --height 12 --layout reverse --border --style default --inline-info"
+# PS1='[\u@\h \W]\$ '
 
 ### ALIASES
 alias ls='ls --color=auto --group-directories-first'
 alias ll='ls --color=auto -l --group-directories-first'
 alias grep='grep --color=auto'
 alias icat='kitten icat'
-alias cclip='xclip -sel clip'
 alias fixpacman="sudo rm /var/lib/pacman/db.lck"
-alias cleanup="sudo pacman -Rsn $(pacman -Qtdq)"
+alias cleanup="sudo pacman -Rsn \$(pacman -Qtdq)"
 alias jctl="journalctl -p 3 -xb"
 alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl" # Recent installed packages
-PS1='[\u@\h \W]\$ '
-export FZF_DEFAULT_OPTS="-e --height 12 --layout reverse --border --style default --inline-info"
+alias hconf="cd ~/.config/hypr; $EDITOR hyprland.lua"
 function tdl() { obsidian tasks verbose file=todo }
 function tdld() { obsidian tasks done verbose file=todo }
 function tdlt() { obsidian tasks todo verbose file=todo }
@@ -87,7 +87,6 @@ export FZF_BASE=/usr/share/fzf
 eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
 # eval "$(fzf --zsh)"
-# eval "$(thefuck --alias)"
 
 ### CBONSAI (VERY IMPORTANT)
 cbonsai -p | sed -E 's/\x1b\[[0-9]+-[0-9]+m//g' # cbonsai contains invalid escape seqs and kitty doesn't ignore them

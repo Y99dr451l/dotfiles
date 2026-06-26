@@ -3,18 +3,20 @@
 	"layer": "top",
 	"position": "top",
 	"modules-left": [
-		"hyprland/workspaces"
-	],
-	"modules-center": [
+		"hyprland/workspaces",
+		"custom/sep",
 		"hyprland/window"
 	],
-	"modules-right": [
-		"cava",
+	"modules-center": [
+		"mpris",
 		"custom/blank",
+		"cava"
+	],
+	"modules-right": [
 		"systemd-failed-units",
 		// "custom/brightness",
 		"pulseaudio",
-		// "network",
+		"network",
 		"memory",
 		"cpu",
 		"battery",
@@ -22,37 +24,47 @@
 	],
 
 	"hyprland/workspaces": {
-		"format": "{icon} {windows}",
+		"format": "{name} {windows}",
 		"workspace-taskbar": {
 			"enable": true,
 			"update-active-window": true,
 			"format": "{icon}"
-		}
+		},
+		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\", on_current_monitor = true })'",
+		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\", on_current_monitor = true })'"
 	},
 	"hyprland/window": {
 		"icon": true,
-		"icon-size": 18
+		"icon-size": 20,
+		"format": "{title}",
+		"max-length": 30
 	},
 	"systemd-failed-units": {
 		"format-ok": "ok ",
 		"hide-on-ok": false
 	},
+	"mpris": {
+		"interval": 5,
+		"format": "{player_icon} {status_icon} {dynamic}",
+		"status-icons": { "playing": "󰐊", "paused": "󰏤", "stopped": "󰓛" },
+		"player-icons": { "firefox": "󰈹", "spotify": "󰓇", "default": "" }
+	},
 	"network" : {
 		"interval": 5,
-		"interface": "wlan0",
 		"format": "{bandwidthDownBytes}↓ {bandwidthUpBytes}↑",
 		"format-disconnected": "x",
 		"max-length": 20
 	},
 	"cpu": {
 		"interval": 5,
-		// "format": "{usage}% {icon0}{icon1}{icon2}{icon3}{icon4}{icon5}{icon6}{icon7}{icon8}{icon9}{icon10}{icon11}{icon12}{icon13}{icon14}{icon15}",
-		"format": "{icon} {usage}%",
+		// "format": "{icon} {usage}%",
+		"format": "  {usage}%",
 		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
 	},
 	"memory": {
 		"interval": 5,
 		"format": "{icon} {percentage}%",
+		"format": "  {percentage}%",
 		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
 	},
 	"cava": {
@@ -61,8 +73,8 @@
 		"autosens": 0,
 		"sensitivity": 1,
 		"bars": 14,
-		"lower_cutoff_freq": 40,
-		"higher_cutoff_freq": 16000,
+		"lower_cutoff_freq": 35,
+		"higher_cutoff_freq": 10000,
 		"sleep_timer": 2,
 		"hide_on_silence": true,
 		"method": "pipewire",
@@ -79,6 +91,15 @@
 	// 	"input_delay": 0,
 	// 	"actions": { "on-click-right": "mode" }
 	// },
+	// "custom/cava": {
+	// 	"exec": "sleep 3 && cava -p $XDG_CONFIG_HOME/cava/waybar_cava.conf | sed -u 's/;//g;s/0/▁/g;s/1/▂/g;s/2/▃/g;s/3/▄/g;s/4/▅/g;s/5/▆/g;s/6/▇/g;s/7/█/g;'",
+	// },
+	"pulseaudio": {
+		"format": "{icon}{volume}%",
+		"format-icons": ["󰕿", "󰖀", "󰕾 "],
+		"format-muted": "󰖁",
+		"scroll-step": 5.
+	},
 
 	// CUSTOM
 	"custom/clock": {
@@ -88,7 +109,6 @@
 		"format": " {text} ",
 		"exec": "~/.config/waybar/scripts/clock.sh"
 	},
-
 	"custom/brightness": {
 		"signal": 8,
 		"interval": 3600,
@@ -101,8 +121,16 @@
 		"on-click": "~/.config/waybar/scripts/brightness.sh offset-",
 		"on-click-right": "~/.config/waybar/scripts/brightness.sh offset+"
 	},
+	"custom/player": {
+		"interval": 5,
+		"tooltip": true,
+		"format": "{text}"
+	},
 	"custom/blank": {
 		"format": "          ",
 		"tooltip": false
+	},
+	"custom/sep": {
+		"format": "|"
 	}
 }
