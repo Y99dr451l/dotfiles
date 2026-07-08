@@ -1,5 +1,4 @@
 {
-	// "output": "DP-3",
 	"layer": "top",
 	"position": "top",
 	"modules-left": [
@@ -24,11 +23,13 @@
 	],
 
 	"hyprland/workspaces": {
-		"format": "{name} {windows}",
+		"format": "{id} {windows}",
+		"all-outputs": true,
 		"workspace-taskbar": {
 			"enable": true,
 			"update-active-window": true,
-			"format": "{icon}"
+			"format": "{icon}",
+			"icon-size": 20
 		},
 		"on-scroll-up": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e-1\", on_current_monitor = true })'",
 		"on-scroll-down": "hyprctl dispatch 'hl.dsp.focus({ workspace = \"e+1\", on_current_monitor = true })'"
@@ -44,8 +45,12 @@
 		"hide-on-ok": false
 	},
 	"mpris": {
-		"interval": 5,
-		"format": "{player_icon} {status_icon} {dynamic}",
+		"interval": 1,
+		"format": "{status_icon} {player_icon} {dynamic}",
+		// "artist-len": 20,
+		// "album-len": 20,
+		// "title-len": 20,
+		"dynamic-len": 60,
 		"status-icons": { "playing": "󰐊", "paused": "󰏤", "stopped": "󰓛" },
 		"player-icons": { "firefox": "󰈹", "spotify": "󰓇", "default": "" }
 	},
@@ -131,6 +136,6 @@
 		"tooltip": false
 	},
 	"custom/sep": {
-		"format": "|"
+		"format": "| "
 	}
 }
