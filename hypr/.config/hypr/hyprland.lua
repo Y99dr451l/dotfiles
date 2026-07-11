@@ -4,7 +4,7 @@ local monitor2 = "desc:ASUSTek COMPUTER INC PA24A J9LMQS047326"
 local monitor3 = "desc:BOE 0x0B6A"
 hl.monitor({ output = monitor1, mode = "2560x1440@144", position = "0x0", scale = "1", vrr = 0 })
 hl.monitor({ output = monitor2, mode = "1920x1200@60", position = "-1920x150", scale = "1" })
-hl.monitor({ output = monitor3, mode = "2560x1440@120", position = "0x1440", scale = "1.25" })
+hl.monitor({ output = monitor3, mode = "2560x1440@120", position = "0x1440", scale = "1" })
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 
 -- AUTOSTART
@@ -73,7 +73,7 @@ hl.bind(mainMod .. " + L",       hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + E",       hl.dsp.exec_cmd(uwsm .. fileManager))
 hl.bind(mainMod .. " + F",       hl.dsp.exec_cmd(uwsm .. browser))
 hl.bind(mainMod .. " + Escape",  hl.dsp.exec_cmd(uwsm .. terminal .. " -o confirm_os_window_close=0 btop"))
-hl.bind(mainMod .. " + U",       hl.dsp.exec_cmd('kitty -o confirm_os_window_close=0 kitten unicode-input', { float = true }))
+hl.bind(mainMod .. " + U", hl.dsp.exec_cmd("kitty -o confirm_os_window_close=0 sh -c 'kitten unicode-input | tr -d \"\\n\" | wl-copy'", { float = true }))
 hl.bind(mainMod .. " + V",       hl.dsp.exec_cmd("cliphist list | walker --dmenu | cliphist decode | wl-copy"))
 hl.bind(mainMod .. " + Super_L", hl.dsp.exec_cmd("nc -U /run/user/1000/walker/walker.sock || (walker --gapplication-service && nc -U /run/user/1000/walker/walker.sock)"))
 -- hl.bind(mainMod .. " + E",       hl.dsp.exec_cmd(uwsm .. terminal .. " -o confirm_os_window_close=0 y"))
