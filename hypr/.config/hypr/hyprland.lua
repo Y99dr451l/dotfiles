@@ -27,8 +27,9 @@ hl.on("hyprland.shutdown", function () hl.exec_cmd("kill -9 \"$(cat /tmp/.hyprla
 -- ENV
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
-hl.env("QT_QPA_PLATFORM", "wayland")
+hl.env("QT_QPA_PLATFORM", "wayland") -- qt theming
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
+hl.env("XDG_MENU_PREFIX", "plasma-") -- dolphin mime fix
 
 -- PERMS
 hl.config({ ecosystem = { enforce_permissions = true } })
@@ -37,24 +38,14 @@ hl.permission("/usr/bin/hyprlock", "screencopy", "allow")
 hl.permission("/usr/lib/xdg-desktop-portal-hyprland", "screencopy", "allow")
 
 -- RULES
--- hl.workspace_rule({ workspace = "w[1-5]", monitor = monitor1 })
--- hl.workspace_rule({ workspace = "w[6-10]", monitor = monitor2 })
--- hl.workspace_rule({ workspace = "1", monitor = monitor1, default = true })
--- hl.workspace_rule({ workspace = "6", monitor = monitor2, default = true })
--- hl.window_rule({ name = "steam", match = { class = "steam"}, workspace = "3" })
--- hl.window_rule({ name = "vesktop", match = { class = "vesktop" }, workspace = "6" })
--- hl.window_rule({ name = "spotify", match = { class = "Spotify" }, workspace = "7" })
 hl.window_rule({ name = "suppress-maximize-events",	match = { class = ".*" }, suppress_event = "maximize" })
 hl.window_rule({ name = "fullscreen-opacity", match = { fullscreen = true }, opacity = "1. override", no_dim = true })
-hl.window_rule({ name = "yt-opacity", match = { class = "firefox", title = ".*(YouTube|Watch2Gether).*" }, opacity = "1. override", no_dim = true })
+hl.window_rule({ name = "yt-opacity", match = { class = "firefox", title = ".*(YouTube|Watch2Gether|Picture-in-Picture).*" }, opacity = "1. override", no_dim = true })
 hl.window_rule({ name = "float-pop-outs", match = { class = "firefox", title = "Picture-in-Picture" }, float = true, keep_aspect_ratio = true })
-hl.window_rule({ name = "center-floats", match = { float = true }, center = true })
 hl.window_rule({ name = "pin-border", match = { pin = true }, border_size = hl.get_config("general.border_size") + 2 })
-hl.window_rule({
-	name = "fix-xwayland-drags",
-	match = { class = "^$", title = "^$", xwayland = true, float = true, fullscreen = false, pin = false },
-	no_focus = true
-})
+hl.window_rule({ name = "fix-xwayland-drags", match = { class = "^$", title = "^$", xwayland = true, float = true, fullscreen = false, pin = false }, no_focus = true })
+-- hl.window_rule({ name = "center-floats", match = { float = true }, center = true })
+-- hl.window_rule({ name = "inhibit-idle", match = {fullscreen = true }, idle_inhibit = "fullscreen" })
 
 -- KEYBINDS
 local terminal = "kitty"
@@ -63,20 +54,20 @@ local browser = "firefox"
 local uwsm = "uwsm app -- "
 local mainMod = "SUPER"
 ---- power
-hl.bind("XF86PowerOff", hl.dsp.exec_cmd("systemctl suspend"))
+hl.bind("XF86PowerOff", hl.dsp.exec_cmd("systemctl suspend"), { locked = true })
 hl.bind(mainMod .. " + XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'shutdown 0'"))
 hl.bind(mainMod .. " + SHIFT + XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'shutdown -r 0'"))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprshutdown"))
 ---- execs
-hl.bind(mainMod .. " + T",       hl.dsp.exec_cmd(uwsm .. terminal))
 hl.bind(mainMod .. " + L",       hl.dsp.exec_cmd("hyprlock"))
+hl.bind(mainMod .. " + T",       hl.dsp.exec_cmd(uwsm .. terminal))
 hl.bind(mainMod .. " + E",       hl.dsp.exec_cmd(uwsm .. fileManager))
+-- hl.bind(mainMod .. " + E",       hl.dsp.exec_cmd(uwsm .. terminal .. " -o confirm_os_window_close=0 y"))
 hl.bind(mainMod .. " + F",       hl.dsp.exec_cmd(uwsm .. browser))
 hl.bind(mainMod .. " + Escape",  hl.dsp.exec_cmd(uwsm .. terminal .. " -o confirm_os_window_close=0 btop"))
 hl.bind(mainMod .. " + U", hl.dsp.exec_cmd("kitty -o confirm_os_window_close=0 sh -c 'kitten unicode-input | tr -d \"\\n\" | wl-copy'", { float = true }))
 hl.bind(mainMod .. " + V",       hl.dsp.exec_cmd("cliphist list | walker --dmenu | cliphist decode | wl-copy"))
 hl.bind(mainMod .. " + Super_L", hl.dsp.exec_cmd("nc -U /run/user/1000/walker/walker.sock || (walker --gapplication-service && nc -U /run/user/1000/walker/walker.sock)"))
--- hl.bind(mainMod .. " + E",       hl.dsp.exec_cmd(uwsm .. terminal .. " -o confirm_os_window_close=0 y"))
 hl.bind("Print",                   hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | wl-copy'))
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
@@ -89,6 +80,7 @@ hl.bind("XF86AudioNext",         hl.dsp.exec_cmd("playerctl next"), { locked = t
 hl.bind("XF86AudioPause",        hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPlay",         hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev",         hl.dsp.exec_cmd("playerctl previous"), { locked = true })
+hl.bind("F19",                   hl.dsp.exec_cmd("pactl set-source-mute @DEFAULT_SOURCE@ toggle"), { locked = true })
 ---- windows
 hl.bind(mainMod .. " + Q",         hl.dsp.window.close())
 hl.bind(mainMod .. " + W",         hl.dsp.window.fullscreen_state({ internal = 1, client = 2, action = "toggle" }))
@@ -119,20 +111,6 @@ for i = 1, 10 do
 	hl.bind(mainMod .. " + " .. key, hl.dsp.focus({ workspace = i, on_current_monitor = true }))
 	hl.bind(mainMod .. " + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
 end
--- for i = 1, 10 do
--- 	hl.bind(mainMod .. " + " .. i % 10, function()
--- 		if i > 5 or #hl.get_monitors() < 2 then
--- 			hl.dispatch(hl.dsp.focus({ workspace = i })) return
--- 		end
--- 		if hl.get_active_workspace().id > 5 then
--- 			hl.dispatch(hl.dsp.focus({ workspace = i }))
--- 			hl.dispatch(hl.dsp.focus({ workspace = (i + 5) % 10 }))
--- 		else
--- 			hl.dispatch(hl.dsp.focus({ workspace = (i + 5) % 10 }))
--- 			hl.dispatch(hl.dsp.focus({ workspace = i }))
--- 		end
--- 	end)
--- end
 
 ---- zoom
 local function zoom(factor)
@@ -147,11 +125,8 @@ hl.config({ input = { kb_layout = "de", follow_mouse = 2, float_switch_override_
 -- LOOK
 hl.config({
 	general = {
-		gaps_in = 3, gaps_out = 8, border_size = 1,
-		col = {
-			active_border = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
-			inactive_border = "rgba(595959aa)"
-		},
+		gaps_in = 3, gaps_out = 6, border_size = 1,
+		col = {	active_border = "rgba(33ccffee)", inactive_border = "rgba(595959aa)" },
 		resize_on_border = false, allow_tearing = true,
 		layout = "dwindle"
 	},
@@ -164,7 +139,7 @@ hl.config({
 			contrast = .7,  vibrancy = 1., vibrancy_darkness = .1
 		},
 		shadow = { enabled = true, range = 40, render_power = 3, color = 0x40080808 },
-		glow = { enabled = true, range = 8, render_power = 4, color = 0xee33ccff }
+		glow = { enabled = false, range = 8, render_power = 4, color = 0xee33ccff }
 	},
 	animations = { enabled = true }
 })
@@ -176,28 +151,26 @@ hl.curve("linear", { type = "bezier", points = {{0, 0}, {1, 1}}})
 hl.curve("almostLinear", { type = "bezier", points = {{0.5, 0.5}, {0.75, 1}}})
 hl.curve("quick", { type = "bezier", points = {{0.15, 0}, {0.1, 1}}})
 hl.curve("easy", { type = "spring", mass = 1, stiffness = 70., dampening = 16. })
-hl.animation({ leaf = "global", enabled = true, speed = 10, bezier = "default" })
-hl.animation({ leaf = "border", enabled = true, speed = 5.39, bezier = "easeOutQuint" })
-hl.animation({ leaf = "windows", enabled = true, speed = 10, spring = "easy" })
-hl.animation({ leaf = "windowsIn", enabled = true, speed = 4.1, spring = "easy", style = "popin 87%" })
-hl.animation({ leaf = "windowsOut", enabled = true, speed = 1.49, bezier = "linear", style = "popin 87%" })
-hl.animation({ leaf = "fadeIn", enabled = true, speed = 1.73, bezier = "almostLinear" })
-hl.animation({ leaf = "fadeOut", enabled = true, speed = 1.46, bezier = "almostLinear" })
-hl.animation({ leaf = "fade", enabled = true, speed = 3.03, bezier = "quick" })
-hl.animation({ leaf = "layers", enabled = true, speed = 3.81, bezier = "easeOutQuint" })
-hl.animation({ leaf = "layersIn", enabled = true, speed = 4, bezier = "easeOutQuint", style = "fade" })
-hl.animation({ leaf = "layersOut", enabled = true, speed = 1.5, bezier = "linear", style = "fade" })
-hl.animation({ leaf = "fadeLayersIn", enabled = true, speed = 1.79, bezier = "almostLinear" })
-hl.animation({ leaf = "fadeLayersOut", enabled = true, speed = 1.39, bezier = "almostLinear" })
-hl.animation({ leaf = "workspaces", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "workspacesIn", enabled = true, speed = 1.21, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "workspacesOut", enabled = true, speed = 1.94, bezier = "almostLinear", style = "fade" })
-hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7, bezier = "quick" })
+hl.animation({ leaf = "global", 		enabled = true, speed = 10, 	bezier = "default" })
+hl.animation({ leaf = "border", 		enabled = true, speed = 5.39, 	bezier = "easeOutQuint" })
+hl.animation({ leaf = "windows", 		enabled = true, speed = 10, 	spring = "easy" })
+hl.animation({ leaf = "windowsIn", 		enabled = true, speed = 4.1, 	spring = "easy", style = "popin 87%" })
+hl.animation({ leaf = "windowsOut", 	enabled = true, speed = 1.49, 	bezier = "linear", style = "popin 87%" })
+hl.animation({ leaf = "fadeIn", 		enabled = true, speed = 1.73, 	bezier = "almostLinear" })
+hl.animation({ leaf = "fadeOut", 		enabled = true, speed = 1.46, 	bezier = "almostLinear" })
+hl.animation({ leaf = "fade", 			enabled = true, speed = 3.03, 	bezier = "quick" })
+hl.animation({ leaf = "layers", 		enabled = true, speed = 3.81, 	bezier = "easeOutQuint" })
+hl.animation({ leaf = "layersIn", 		enabled = true, speed = 4, 		bezier = "easeOutQuint", style = "fade" })
+hl.animation({ leaf = "layersOut", 		enabled = true, speed = 1.5, 	bezier = "linear", style = "fade" })
+hl.animation({ leaf = "fadeLayersIn", 	enabled = true, speed = 1.79, 	bezier = "almostLinear" })
+hl.animation({ leaf = "fadeLayersOut", 	enabled = true, speed = 1.39, 	bezier = "almostLinear" })
+hl.animation({ leaf = "workspaces", 	enabled = true, speed = 1.94, 	bezier = "almostLinear", style = "fade" })
+hl.animation({ leaf = "workspacesIn", 	enabled = true, speed = 1.21, 	bezier = "almostLinear", style = "fade" })
+hl.animation({ leaf = "workspacesOut", 	enabled = true, speed = 1.94, 	bezier = "almostLinear", style = "fade" })
+hl.animation({ leaf = "zoomFactor", 	enabled = true, speed = 7, 		bezier = "quick" })
 
 -- LAYOUTS
-hl.config({	dwindle = {	preserve_split = true }})
-hl.config({ master = { new_status = "master" }})
-hl.config({ scrolling = { fullscreen_on_one_column = true }})
+hl.config({	dwindle = {	preserve_split = true },  master = { new_status = "master" }, scrolling = { fullscreen_on_one_column = true }})
 
 -- MISC
 hl.config({ misc = { force_default_wallpaper = 0, disable_hyprland_logo = true, middle_click_paste = false }})
@@ -205,31 +178,9 @@ hl.config({ misc = { force_default_wallpaper = 0, disable_hyprland_logo = true, 
 -- PLUGINS
 if hl.plugin.dynamic_cursors then
 	hl.config({ plugin = { dynamic_cursors = {
-		enabled = true,
-		mode = "tilt",
-		threshold = 2,
-		tilt = {
-			limit = 2000,
-			activation = "quadratic",
-			window = 100,
-			full = 90
-		},
-		shake = {
-			enabled = true,
-			threshold = 5.,
-			base = 2.,
-			speed = 2.,
-			influence = .3,
-			limit = 0.,
-			timeout = 1500,
-			effects = true,
-			ipc = false
-		},
-		hyprcursor = {
-			enabled = false,
-			nearest = 0,
-			resolution = -1,
-			fallback = "clientside"
-		}
+		enabled = true, mode = "tilt", threshold = 2,
+		tilt = { limit = 2000, activation = "quadratic", window = 100, full = 90 },
+		shake = { enabled = true, threshold = 5., base = 2., speed = 2., influence = .3, limit = 0., timeout = 1500, effects = true, ipc = false },
+		hyprcursor = { enabled = false, nearest = 0, resolution = -1, fallback = "clientside" }
 	}}})
 end

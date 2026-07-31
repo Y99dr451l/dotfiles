@@ -9,7 +9,7 @@
     "literate": false,
     "lsp.autocompleteDetails": true,
     "lsp.formatOnSave": false,
-    "lsp.server": "cpp=clangd, lua=lua-language-server, adb=ada_language_server, json=vscode-json-language-server --stdio",
+    "lsp.server": "cpp=clangd, lua=lua-language-server, json=vscode-json-language-server --stdio, rust=rust-analyzer, wgsl=wgsl-analyzer",
     "lsp.tabcompletion": true,
     "matchbracestyle": "highlight",
     "mkparents": true,
