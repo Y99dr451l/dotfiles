@@ -11,14 +11,15 @@
 	],
 	"modules-right": [
 		// "custom/brightness",
-		"pulseaudio",
 		"network",
+		"pulseaudio",
 		"memory",
 		"cpu",
 		"battery",
 		"custom/clock"
 	],
 
+	// LEFT
 	"hyprland/workspaces": {
 		"format": "{name} {windows}",
 		"all-outputs": true,
@@ -38,6 +39,7 @@
 		"format": "{title}",
 		"max-length": 48
 	},
+	// CENTER
 	"mpris": {
 		"interval": 2,
 		"format": "{status_icon} {player_icon} {artist} - {title}",
@@ -46,26 +48,6 @@
 		"title-len": 72,
 		"status-icons": { "playing": "󰐊", "paused": "󰏤", "stopped": "󰓛" },
 		"player-icons": { "firefox": "󰈹", "spotify": "󰓇", "default": "" }
-	},
-	"network" : {
-		"interval": 5,
-		"format": "{bandwidthDownBytes}↓ {bandwidthUpBytes}↑",
-		"format-disconnected": "x",
-		"tooltip": true,
-		"max-length": 20
-	},
-	"cpu": {
-		"interval": 5,
-		"tooltip": true,
-		// "format": "{icon} {usage}%",
-		"format": "  {usage}%",
-		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
-	},
-	"memory": {
-		"interval": 5,
-		"tooltip": true,
-		"format": "  {percentage}%",
-		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
 	},
 	"cava": {
 		"method": "pipewire",
@@ -84,6 +66,14 @@
 		"format-icons": [" ", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
 		"actions": { "on-click-right": "mode" }
 	},
+	// RIGHT
+	"network" : {
+		"interval": 5,
+		"format": "{bandwidthDownBytes}↓ {bandwidthUpBytes}↑",
+		"format-disconnected": "x",
+		"tooltip": true,
+		"max-length": 20
+	},
 	"pulseaudio": {
 		"format": "{icon}{volume}%",
 		"format-icons": ["󰕿", "󰖀", "󰕾 "],
@@ -91,8 +81,24 @@
 		"tooltip": true,
 		"scroll-step": 5.0
 	},
-
-	// CUSTOM
+	"memory": {
+		"interval": 5,
+		"tooltip": true,
+		"format": "  {percentage}%",
+		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+		"states": { "warning": 80, "critical": 90 }
+	},
+	"cpu": {
+		"interval": 5,
+		"tooltip": true,
+		// "format": "{icon} {usage}%",
+		"format": "  {usage}%",
+		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+		"states": { "warning": 80, "critical": 90 }
+	},
+	"battery": {
+		"states": { "warning": 20, "critical": 10 }
+	},
 	"custom/clock": {
 		"interval": 5,
 		"tooltip": true,
@@ -100,6 +106,7 @@
 		"format": " {text} ",
 		"exec": "~/.config/waybar/scripts/clock.sh"
 	},
+	//
 	"custom/brightness": {
 		"signal": 8,
 		"interval": 3600,
