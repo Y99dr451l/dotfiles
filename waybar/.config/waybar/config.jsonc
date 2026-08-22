@@ -3,16 +3,13 @@
 	"position": "top",
 	"modules-left": [
 		"hyprland/workspaces",
-		"custom/sep",
 		"hyprland/window"
 	],
 	"modules-center": [
 		"mpris",
-		"custom/blank",
 		"cava"
 	],
 	"modules-right": [
-		"systemd-failed-units",
 		// "custom/brightness",
 		"pulseaudio",
 		"network",
@@ -23,8 +20,9 @@
 	],
 
 	"hyprland/workspaces": {
-		"format": "{id} {windows}",
+		"format": "{name} {windows}",
 		"all-outputs": true,
+		"show-special": true,
 		"workspace-taskbar": {
 			"enable": true,
 			"update-active-window": true,
@@ -38,19 +36,14 @@
 		"icon": true,
 		"icon-size": 20,
 		"format": "{title}",
-		"max-length": 30
-	},
-	"systemd-failed-units": {
-		"format-ok": "ok ",
-		"hide-on-ok": false
+		"max-length": 48
 	},
 	"mpris": {
-		"interval": 1,
-		"format": "{status_icon} {player_icon} {dynamic}",
-		// "artist-len": 20,
-		// "album-len": 20,
-		// "title-len": 20,
-		"dynamic-len": 60,
+		"interval": 2,
+		"format": "{status_icon} {player_icon} {artist} - {title}",
+		"tooltip": true,
+		"tooltip-format": "{player_icon} {title}\n{artist}\n{album}",
+		"title-len": 72,
 		"status-icons": { "playing": "󰐊", "paused": "󰏤", "stopped": "󰓛" },
 		"player-icons": { "firefox": "󰈹", "spotify": "󰓇", "default": "" }
 	},
@@ -58,52 +51,45 @@
 		"interval": 5,
 		"format": "{bandwidthDownBytes}↓ {bandwidthUpBytes}↑",
 		"format-disconnected": "x",
+		"tooltip": true,
 		"max-length": 20
 	},
 	"cpu": {
 		"interval": 5,
+		"tooltip": true,
 		// "format": "{icon} {usage}%",
 		"format": "  {usage}%",
 		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
 	},
 	"memory": {
 		"interval": 5,
-		"format": "{icon} {percentage}%",
+		"tooltip": true,
 		"format": "  {percentage}%",
 		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"]
 	},
 	"cava": {
+		"method": "pipewire",
 		"framerate": 30,
-		"method": "sdl_glsl",
 		"autosens": 0,
-		"sensitivity": 1,
-		"bars": 14,
+		"sensitivity": 2,
+		"bars": 16,
 		"lower_cutoff_freq": 35,
 		"higher_cutoff_freq": 10000,
 		"sleep_timer": 2,
 		"hide_on_silence": true,
-		"method": "pipewire",
 		"stereo": true,
 		"bar_delimiter": 0,
 		"noise_reduction": 0.77,
 		"input_delay": 2,
 		"format-icons": [" ", "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
-		// "format-icons": ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"],
 		"actions": { "on-click-right": "mode" }
 	},
-	// "cava": {
-	// 	"cava_config": "$XDG_CONFIG_HOME/cava/waybar.conf",
-	// 	"input_delay": 0,
-	// 	"actions": { "on-click-right": "mode" }
-	// },
-	// "custom/cava": {
-	// 	"exec": "sleep 3 && cava -p $XDG_CONFIG_HOME/cava/waybar_cava.conf | sed -u 's/;//g;s/0/▁/g;s/1/▂/g;s/2/▃/g;s/3/▄/g;s/4/▅/g;s/5/▆/g;s/6/▇/g;s/7/█/g;'",
-	// },
 	"pulseaudio": {
 		"format": "{icon}{volume}%",
 		"format-icons": ["󰕿", "󰖀", "󰕾 "],
 		"format-muted": "󰖁",
-		"scroll-step": 5.
+		"tooltip": true,
+		"scroll-step": 5.0
 	},
 
 	// CUSTOM
@@ -125,17 +111,5 @@
 		"on-scroll-down": "~/.config/waybar/scripts/brightness.sh down",
 		"on-click": "~/.config/waybar/scripts/brightness.sh offset-",
 		"on-click-right": "~/.config/waybar/scripts/brightness.sh offset+"
-	},
-	"custom/player": {
-		"interval": 5,
-		"tooltip": true,
-		"format": "{text}"
-	},
-	"custom/blank": {
-		"format": "          ",
-		"tooltip": false
-	},
-	"custom/sep": {
-		"format": "| "
 	}
 }
