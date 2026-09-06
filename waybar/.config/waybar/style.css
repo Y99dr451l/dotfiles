@@ -26,7 +26,7 @@ tooltip {
 	border-radius: 6px;
 }
 
-#workspaces, #window, #mpris, #cava, #pulseaudio, #network, #memory, #cpu, #battery, #custom-clock {
+.module {
 	background: rgba(20, 20, 25, 0.5);
 	border: 1px solid rgba(255, 255, 255, 0.1);
 	border-radius: 8px;
