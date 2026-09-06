@@ -11,6 +11,7 @@
 	],
 	"modules-right": [
 		// "custom/brightness",
+		"custom/anims",
 		"network",
 		"pulseaudio",
 		"memory",
@@ -108,6 +109,15 @@
 		"return-type": "json",
 		"format": " {text} ",
 		"exec": "~/.config/waybar/scripts/clock.sh"
+	},
+	"custom/anims": {
+		"signal": 5,
+		"interval": "once",
+		"return-type": "json",
+		"format": "{icon}",
+		"format-icons": ["󱤎", ""],
+		"hide-empty-text": false,
+		"exec": "~/.config/waybar/scripts/anims.sh"
 	},
 	//
 	"custom/brightness": {

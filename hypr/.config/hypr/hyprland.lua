@@ -69,6 +69,7 @@ hl.bind(mainMod .. " + Escape",  hl.dsp.exec_cmd(uwsm .. terminal .. " -o confir
 hl.bind(mainMod .. " + U",       hl.dsp.exec_cmd("kitty -o confirm_os_window_close=0 sh -c 'kitten unicode-input | tr -d \"\\n\" | wl-copy'", { float = true }))
 hl.bind(mainMod .. " + V",       hl.dsp.exec_cmd("cliphist list | walker --dmenu | cliphist decode | wl-copy"))
 hl.bind(mainMod .. " + Super_L", hl.dsp.exec_cmd("nc -U /run/user/1000/walker/walker.sock || (walker --gapplication-service && nc -U /run/user/1000/walker/walker.sock)"))
+hl.bind(mainMod .. " + A",       function() hl.config({ animations = { enabled = not hl.get_config("animations.enabled")}}); hl.exec_cmd("pkill -SIGRTMIN+5 waybar")  end)
 hl.bind("Print",                   hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | wl-copy'))
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
@@ -161,6 +162,7 @@ hl.config({
 })
 
 -- ANIMATIONS
+hl.config({ animations = { enabled = false }})
 hl.curve("easeinout", { type = "bezier", points = {{.5, .0}, {.15, 1.05}} })
 hl.curve("easy", { type = "spring", mass = 1, stiffness = 70., dampening = 16. })
 hl.animation({ leaf = "global", enabled = true, speed = 3., bezier = "easeinout" })
