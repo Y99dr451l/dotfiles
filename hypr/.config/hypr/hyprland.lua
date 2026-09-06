@@ -82,6 +82,8 @@ hl.bind("XF86AudioPause",        hl.dsp.exec_cmd("playerctl play-pause"), { lock
 hl.bind("XF86AudioPlay",         hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev",         hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 hl.bind("F19",                   hl.dsp.exec_cmd("pactl set-source-mute @DEFAULT_SOURCE@ toggle"), { locked = true })
+hl.bind(mainMod .. " + A",         function() hl.config({ animations = { enabled = false }}) end)
+hl.bind(mainMod .. " + SHIFT + A", function() hl.config({ animations = { enabled = true }}) end)
 ---- windows
 hl.bind(mainMod .. " + Q",         hl.dsp.window.close())
 hl.bind(mainMod .. " + W",         hl.dsp.window.fullscreen_state({ internal = 1, client = 2, action = "toggle" }))
@@ -161,6 +163,7 @@ hl.config({
 })
 
 -- ANIMATIONS
+hl.config({ animations = { enabled = false }})
 hl.curve("easeinout", { type = "bezier", points = {{.5, .0}, {.15, 1.05}} })
 hl.curve("easy", { type = "spring", mass = 1, stiffness = 70., dampening = 16. })
 hl.animation({ leaf = "global", enabled = true, speed = 3., bezier = "easeinout" })
