@@ -3,7 +3,7 @@ local monitor1 = "desc:LG Electronics LG ULTRAGEAR 303MANJBZK27"
 local monitor2 = "desc:ASUSTek COMPUTER INC PA24A J9LMQS047326"
 local monitor3 = "desc:BOE 0x0B6A"
 hl.monitor({ output = monitor1, mode = "2560x1440@144", position = "0x0", scale = "1", vrr = 0, bitdepth = 10, supports_hdr = 1 })
-hl.monitor({ output = monitor2, mode = "1920x1200@60", position = "-1920x150", scale = "1", bitdepth = 10, supports_hdr = 1 })
+hl.monitor({ output = monitor2, mode = "1920x1200@60", position = "2560x150", scale = "1", bitdepth = 10, supports_hdr = 1 })
 hl.monitor({ output = monitor3, mode = "2560x1440@120", position = "0x1440", scale = "1" })
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 

@@ -15,6 +15,7 @@
 		"pulseaudio",
 		"memory",
 		"cpu",
+		"custom/gpu",
 		"battery",
 		"custom/clock"
 	],
@@ -75,9 +76,11 @@
 		"max-length": 20
 	},
 	"pulseaudio": {
-		"format": "{icon}{volume}%",
+		"format": "{format_source}{icon}{volume}%",
 		"format-icons": ["󰕿", "󰖀", "󰕾 "],
 		"format-muted": "󰖁",
+		"format-source": "",
+		"format-source-muted": " ",
 		"tooltip": true,
 		"scroll-step": 5.0
 	},
@@ -91,9 +94,9 @@
 	"cpu": {
 		"interval": 5,
 		"tooltip": true,
-		// "format": "{icon} {usage}%",
 		"format": "  {usage}%",
-		"format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+		// "format": "{icon} {usage}%",
+		// "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
 		"states": { "warning": 80, "critical": 90 }
 	},
 	"battery": {
@@ -118,5 +121,12 @@
 		"on-scroll-down": "~/.config/waybar/scripts/brightness.sh down",
 		"on-click": "~/.config/waybar/scripts/brightness.sh offset-",
 		"on-click-right": "~/.config/waybar/scripts/brightness.sh offset+"
+	},
+	"custom/gpu": {
+		"interval": 5,
+		"return-type": "",
+		"format": "󰋁  {}%",
+		"exec": "nvidia-smi --query-gpu=utilization.gpu | grep -v gpu | cut -d' ' -f1",
+		"states": { "warning": 80, "critical": 90 }
 	}
 }
