@@ -43,7 +43,7 @@
 	},
 	// CENTER
 	"mpris": {
-		"interval": 2,
+		"interval": 1,
 		"format": "{status_icon} {player_icon} {artist} - {title}",
 		"tooltip": true,
 		"tooltip-format": "{player_icon} {title}\n{artist}\n{album}",
@@ -117,6 +117,7 @@
 		"format": "{icon}",
 		"format-icons": ["󱤎", ""],
 		"hide-empty-text": false,
+		"tooltip": false,
 		"exec": "~/.config/waybar/scripts/anims.sh"
 	},
 	//

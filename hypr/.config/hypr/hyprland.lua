@@ -3,7 +3,7 @@ local monitor1 = "desc:LG Electronics LG ULTRAGEAR 303MANJBZK27"
 local monitor2 = "desc:ASUSTek COMPUTER INC PA24A J9LMQS047326"
 local monitor3 = "desc:BOE 0x0B6A"
 hl.monitor({ output = monitor1, mode = "2560x1440@144", position = "0x0", scale = "1", vrr = 0, bitdepth = 10, supports_hdr = 1 })
-hl.monitor({ output = monitor2, mode = "1920x1200@60", position = "2560x150", scale = "1", bitdepth = 10, supports_hdr = 1 })
+hl.monitor({ output = monitor2, mode = "1920x1200@60", position = "-1920x150", scale = "1", bitdepth = 8 })
 hl.monitor({ output = monitor3, mode = "2560x1440@120", position = "0x1440", scale = "1" })
 hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 
@@ -46,7 +46,7 @@ hl.window_rule({ name = "pin-border", match = { pin = true }, border_size = hl.g
 hl.window_rule({ name = "fix-xwayland-drags", match = { class = "^$", title = "^$", xwayland = true, float = true, fullscreen = false, pin = false }, no_focus = true })
 -- hl.window_rule({ name = "center-floats", match = { float = true }, center = true })
 -- hl.window_rule({ name = "inhibit-idle", match = {fullscreen = true }, idle_inhibit = "fullscreen" })
-hl.workspace_rule({ workspace = "special:magic", layout = "scrolling" })
+hl.workspace_rule({ workspace = "special:S", layout = "scrolling" })
 
 -- KEYBINDS
 local terminal = "kitty"
@@ -54,6 +54,10 @@ local fileManager = "dolphin"
 local browser = "firefox"
 local uwsm = "uwsm app -- "
 local mainMod = "SUPER"
+---- waybar signals
+local WB_ANIM = 5; local WB_MPRIS = 6
+local function wb_signal(n) hl.dispatch(hl.dsp.exec_cmd("pkill -SIGRTMIN+" .. n .. " waybar")) end
+local function wb_cmd(cmd, n) return function() hl.dispatch(hl.dsp.exec_cmd(cmd)); wb_signal(n) end end
 ---- power
 hl.bind("XF86PowerOff", hl.dsp.exec_cmd("systemctl suspend"), { locked = true })
 hl.bind(mainMod .. " + XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'shutdown 0'"))
@@ -70,14 +74,14 @@ hl.bind(mainMod .. " + Escape",  hl.dsp.exec_cmd(uwsm .. terminal .. " -o confir
 hl.bind(mainMod .. " + U",       hl.dsp.exec_cmd("kitty -o confirm_os_window_close=0 sh -c 'kitten unicode-input | tr -d \"\\n\" | wl-copy'", { float = true }))
 hl.bind(mainMod .. " + V",       hl.dsp.exec_cmd("cliphist list | walker --dmenu | cliphist decode | wl-copy"))
 hl.bind(mainMod .. " + Super_L", hl.dsp.exec_cmd("nc -U /run/user/1000/walker/walker.sock || (walker --gapplication-service && nc -U /run/user/1000/walker/walker.sock)"))
-hl.bind(mainMod .. " + A",       function() hl.config({ animations = { enabled = not hl.get_config("animations.enabled")}}); hl.exec_cmd("pkill -SIGRTMIN+5 waybar")  end)
+hl.bind(mainMod .. " + A",       function() hl.config({ animations = { enabled = not hl.get_config("animations.enabled")}}); wb_signal(WB_ANIM) end)
 hl.bind("Print",                   hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | wl-copy'))
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true, repeating = true })
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true, repeating = true }) -- mute led does not work
 --- hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("amixer -c 1 set Master toggle"), { locked = true, repeating = true }) -- waybar module does not react
-hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true })
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true }) -- mute led does not work
+hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true })
 hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl set 5%+"), { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-"), { locked = true, repeating = true })
 hl.bind("XF86AudioNext",         hl.dsp.exec_cmd("playerctl next"), { locked = true })
@@ -102,8 +106,8 @@ hl.bind(mainMod .. " + SHIFT + up",    hl.dsp.window.move({ direction = "up" }))
 hl.bind(mainMod .. " + SHIFT + down",  hl.dsp.window.move({ direction = "down" }))
 hl.bind(mainMod .. " + CTRL + SHIFT + left",  hl.dsp.window.move({ workspace = "e-1" }))
 hl.bind(mainMod .. " + CTRL + SHIFT + right", hl.dsp.window.move({ workspace = "e+1" }))
-hl.bind(mainMod .. " + dead_circumflex",         hl.dsp.workspace.toggle_special("magic"))
-hl.bind(mainMod .. " + SHIFT + dead_circumflex", hl.dsp.window.move({ workspace = "special:magic" }))
+hl.bind(mainMod .. " + dead_circumflex",         hl.dsp.workspace.toggle_special("S"))
+hl.bind(mainMod .. " + SHIFT + dead_circumflex", hl.dsp.window.move({ workspace = "special:S" }))
 hl.bind(mainMod .. " + CTRL + left",  hl.dsp.focus({ workspace = "e-1", on_current_monitor = true }))
 hl.bind(mainMod .. " + CTRL + right", hl.dsp.focus({ workspace = "e+1", on_current_monitor = true }))
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
@@ -171,7 +175,7 @@ hl.animation({ leaf = "global", enabled = true, speed = 3., bezier = "easeinout"
 -- LAYOUTS
 hl.config({
 	dwindle = {	preserve_split = true },
-	scrolling = { fullscreen_on_one_column = false, column_width = .667, focus_fit_method = 0 }
+	scrolling = { fullscreen_on_one_column = false, column_width = .8, focus_fit_method = 0 }
 })
 
 -- MISC
