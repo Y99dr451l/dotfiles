@@ -60,6 +60,7 @@ hl.bind(mainMod .. " + XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown --post-cmd '
 hl.bind(mainMod .. " + SHIFT + XF86PowerOff", hl.dsp.exec_cmd("hyprshutdown --post-cmd 'shutdown -r 0'"))
 hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprshutdown"))
 ---- execs
+hl.bind(mainMod .. " + R",       hl.dsp.exec_cmd("hyprctl reload"))
 hl.bind(mainMod .. " + L",       hl.dsp.exec_cmd("hyprlock"))
 hl.bind(mainMod .. " + T",       hl.dsp.exec_cmd(uwsm .. terminal))
 hl.bind(mainMod .. " + E",       hl.dsp.exec_cmd(uwsm .. fileManager))
@@ -74,7 +75,8 @@ hl.bind("Print",                   hl.dsp.exec_cmd('grim -g "$(slurp)" - | swapp
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | wl-copy'))
 hl.bind("XF86AudioRaiseVolume",  hl.dsp.exec_cmd("wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+"), { locked = true, repeating = true })
 hl.bind("XF86AudioLowerVolume",  hl.dsp.exec_cmd("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), { locked = true, repeating = true })
-hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true, repeating = true })
+hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), { locked = true, repeating = true }) -- mute led does not work
+--- hl.bind("XF86AudioMute",         hl.dsp.exec_cmd("amixer -c 1 set Master toggle"), { locked = true, repeating = true }) -- waybar module does not react
 hl.bind("XF86AudioMicMute",      hl.dsp.exec_cmd("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessUp",   hl.dsp.exec_cmd("brightnessctl set 5%+"), { locked = true, repeating = true })
 hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("brightnessctl set 5%-"), { locked = true, repeating = true })
@@ -157,12 +159,11 @@ hl.config({
 		},
 		shadow = { enabled = true, range = 40, render_power = 3, color = 0x40080808 },
 		glow = { enabled = false, range = 8, render_power = 4, color = 0xee33ccff }
-	},
-	animations = { enabled = true }
+	}
 })
 
 -- ANIMATIONS
-hl.config({ animations = { enabled = false }})
+hl.config({ animations = { enabled = true }})
 hl.curve("easeinout", { type = "bezier", points = {{.5, .0}, {.15, 1.05}} })
 hl.curve("easy", { type = "spring", mass = 1, stiffness = 70., dampening = 16. })
 hl.animation({ leaf = "global", enabled = true, speed = 3., bezier = "easeinout" })

@@ -74,14 +74,14 @@
 		"format": "{bandwidthDownBytes}↓ {bandwidthUpBytes}↑",
 		"format-disconnected": "x",
 		"tooltip": true,
-		"max-length": 20
+		"max-length": 20,
 	},
 	"pulseaudio": {
-		"format": "{format_source}{icon}{volume}%",
-		"format-icons": ["󰕿", "󰖀", "󰕾 "],
-		"format-muted": "󰖁",
+		"format": "{format_source} {icon} {volume}%",
+		"format-muted": "{format_source} 󰖁",
+		"format-icons": ["󰕿", "󰖀", "󰕾"],
 		"format-source": "",
-		"format-source-muted": " ",
+		"format-source-muted": "",
 		"tooltip": true,
 		"scroll-step": 5.0
 	},
