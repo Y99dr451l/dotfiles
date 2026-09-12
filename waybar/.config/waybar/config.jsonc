@@ -77,11 +77,11 @@
 		"max-length": 20,
 	},
 	"pulseaudio": {
-		"format": "{format_source} {icon} {volume}%",
-		"format-muted": "{format_source} 󰖁",
-		"format-icons": ["󰕿", "󰖀", "󰕾"],
+		"format": "{format_source}{icon}{volume}%",
+		"format-muted": "{format_source}󰖁",
+		"format-icons": ["󰕿 ", "󰖀 ", "󰕾 "],
 		"format-source": "",
-		"format-source-muted": "",
+		"format-source-muted": " ",
 		"tooltip": true,
 		"scroll-step": 5.0
 	},
