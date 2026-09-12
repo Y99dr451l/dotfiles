@@ -10,6 +10,6 @@ dependencies of `zsh`: `zsh`, `oh-my-zsh`, `zsh-autosuggestions`, `zsh-syntax-hi
 
 dependencies of `hypr`: `hyprland`, `hyprlock`, `hypridle`, `hyprsunset`, `hyprpaper`, `hyprlauncher`, `waybar`, `uwsm`, (`kitty`, `dolphin`, `grim`, `slurp`, `hypr-dynamic-cursors`)
 
-dependencies of `qt`: `breeze`
+dependencies of `qt`: `breeze`, `breeze5`
 
 dependencies of `gtk`: `breeze-gtk`
