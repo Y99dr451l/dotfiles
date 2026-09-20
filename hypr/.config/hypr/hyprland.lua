@@ -12,6 +12,7 @@ hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "1" })
 -- AUTOSTART
 local restart = function(...)	for _, v in ipairs({...}) do hl.exec_cmd("pkill " .. tostring(v) .. "; " .. tostring(v)) end end
 local start = function(...) for _, v in ipairs({...}) do hl.exec_cmd("pidof " .. tostring(v) .. " || " .. tostring(v)) end end
+local toggle = function(...) for _, v in ipairs({...}) do hl.exec_cmd("pkill " .. tostring(v) .. " || " .. tostring(v)) end end
 hl.on("hyprland.start", function()
 	restart("waybar", "hyprpaper", "hypridle", "hyprsunset", "syncthing", "swaync")
 	hl.exec_cmd("easyeffects --service-mode -w")
@@ -52,13 +53,9 @@ hl.window_rule({ name = "fix-xwayland-drags", match = { class = "^$", title = "^
 hl.workspace_rule({ workspace = "special:S", layout = "scrolling" })
 
 -- KEYBINDS
-local terminal = "kitty"
-local fileManager = "dolphin"
-local browser = "firefox"
-local uwsm = "uwsm app -- "
-local mainMod = "SUPER"
+local uwsm = "uwsm app -- "; local mainMod = "SUPER"
 ---- waybar signals
-local WB_ANIM = 5; local WB_MPRIS = 6
+local WB_ANIM = 5; local WB_IDLE = 6
 local function wb_signal(n) hl.dispatch(hl.dsp.exec_cmd("pkill -SIGRTMIN+" .. n .. " waybar")) end
 local function wb_cmd(cmd, n) return function() hl.dispatch(hl.dsp.exec_cmd(cmd)); wb_signal(n) end end
 ---- power
@@ -69,14 +66,15 @@ hl.bind(mainMod .. " + SHIFT + L", hl.dsp.exec_cmd("hyprshutdown"))
 ---- execs
 hl.bind(mainMod .. " + R",       hl.dsp.exec_cmd("hyprctl reload"))
 hl.bind(mainMod .. " + L",       hl.dsp.exec_cmd("hyprlock"))
-hl.bind(mainMod .. " + T",       hl.dsp.exec_cmd(uwsm .. terminal))
-hl.bind(mainMod .. " + E",       hl.dsp.exec_cmd(uwsm .. fileManager))
-hl.bind(mainMod .. " + F",       hl.dsp.exec_cmd(uwsm .. browser))
-hl.bind(mainMod .. " + Escape",  hl.dsp.exec_cmd(uwsm .. terminal .. " -o confirm_os_window_close=0 btop"))
+hl.bind(mainMod .. " + T",       hl.dsp.exec_cmd(uwsm .. "kitty"))
+hl.bind(mainMod .. " + E",       hl.dsp.exec_cmd(uwsm .. "dolphin"))
+hl.bind(mainMod .. " + F",       hl.dsp.exec_cmd(uwsm .. "firefox"))
+hl.bind(mainMod .. " + Escape",  hl.dsp.exec_cmd(uwsm .. "kitty -o confirm_os_window_close=0 btop"))
 hl.bind(mainMod .. " + U",       hl.dsp.exec_cmd("kitty -o confirm_os_window_close=0 sh -c 'kitten unicode-input | tr -d \"\\n\" | wl-copy'", { float = true }))
 hl.bind(mainMod .. " + V",       hl.dsp.exec_cmd("cliphist list | walker --dmenu | cliphist decode | wl-copy"))
 hl.bind(mainMod .. " + Super_L", hl.dsp.exec_cmd("nc -U /run/user/1000/walker/walker.sock || (walker --gapplication-service && nc -U /run/user/1000/walker/walker.sock)"))
 hl.bind(mainMod .. " + A",       function() hl.config({ animations = { enabled = not hl.get_config("animations.enabled")}}); wb_signal(WB_ANIM) end)
+hl.bind(mainMod .. " + I",       wb_cmd("pkill hypridle || hypridle", WB_IDLE))
 hl.bind(mainMod .. " + Y",       hl.dsp.exec_cmd("swaync-client -t"))
 hl.bind("Print",                   hl.dsp.exec_cmd('grim -g "$(slurp)" - | swappy -f -'))
 hl.bind(mainMod .. " + SHIFT + S", hl.dsp.exec_cmd('grim -g "$(slurp -d)" - | wl-copy'))

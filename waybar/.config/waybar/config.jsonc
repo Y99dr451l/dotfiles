@@ -11,6 +11,7 @@
 	],
 	"modules-right": [
 		// "custom/brightness",
+		"custom/idle",
 		"custom/anims",
 		"network",
 		"pulseaudio",
@@ -115,10 +116,20 @@
 		"interval": "once",
 		"return-type": "json",
 		"format": "{icon}",
-		"format-icons": ["󱤎", ""],
+		"format-icons": ["󰪐", ""],
 		"hide-empty-text": false,
 		"tooltip": false,
 		"exec": "~/.config/waybar/scripts/anims.sh"
+	},
+	"custom/idle": {
+		"signal": 6,
+		"interval": "once",
+		"return-type": "json",
+		"format": "{icon}",
+		"format-icons": ["⟳", ""],
+		"hide-empty-text": false,
+		"tooltip": false,
+		"exec": "~/.config/waybar/scripts/idle.sh"
 	},
 	//
 	"custom/brightness": {
