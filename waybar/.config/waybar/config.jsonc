@@ -45,12 +45,12 @@
 	// CENTER
 	"mpris": {
 		"interval": 1,
-		"format": "{status_icon} {player_icon} {artist} - {title}",
+		"format": "{status_icon} {player_icon} <b> {artist}</b> {title}",
 		"tooltip": true,
-		"tooltip-format": "{player_icon} {title}\n{artist}\n{album}",
+		"tooltip-format": "{player}\n{artist} - {title}\n{album}",
 		"title-len": 72,
 		"status-icons": { "playing": "󰐊", "paused": "󰏤", "stopped": "󰓛" },
-		"player-icons": { "firefox": "󰈹", "spotify": "󰓇", "default": "" }
+		"player-icons": { "firefox": "󰈹", "spotify": "", "default": "" }
 	},
 	"cava": {
 		"method": "pipewire",
@@ -122,7 +122,17 @@
 		"states": { "warning": 80, "critical": 90 }
 	},
 	"battery": {
-		"states": { "warning": 20, "critical": 10 }
+		"interval": 20,
+		"format": "{icon} {capacity}%",
+		"format-icons": ["󰁻", "󰁽", "󰁿", "󰂁", "󰁹"],
+		"states": { "warning": 20, "critical": 10 },
+		"events": {
+			"on-discharging-warning": "notify-send -u normal 'Low Battery'",
+			"on-discharging-critical": "notify-send -u critical 'Very Low Battery'",
+			"on-charging-100": "notify-send -u normal 'Battery Full!'",
+			"on-discharging": "notify-send -u normal 'Power Switch' Discharging",
+			"on-charging": "notify-send -u normal 'Power Switch' Charging'"
+		},
 	},
 	"custom/clock": {
 		"interval": 5,

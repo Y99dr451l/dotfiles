@@ -152,20 +152,20 @@ hl.config({ input = {
 -- LOOK
 hl.config({
 	general = {
-		gaps_in = 3, gaps_out = 6, border_size = 1,
-		col = {	active_border = "rgba(33ccffee)", inactive_border = "rgba(595959aa)" },
+		gaps_in = 3, gaps_out = 6, border_size = 2,
+		col = {	active_border = "rgba(aaaaaaaa)", inactive_border = "rgba(aaaaaa11)" }, -- rgba
 		resize_on_border = false, allow_tearing = true, layout = "dwindle"
 	},
 	decoration = {
-		rounding = 4, rounding_power = 2,
-		active_opacity = .97, inactive_opacity = .9, fullscreen_opacity = 1.,
-		dim_modal = true, dim_inactive = true, dim_strength = .1,
+		rounding = 24, rounding_power = 1,
+		active_opacity = .95, inactive_opacity = .9, fullscreen_opacity = 1.,
+		dim_modal = true, dim_inactive = true, dim_strength = .15,
 		blur = {
 			enabled = true, size = 5, passes = 1, ignore_opacity = true, xray = true,
-			contrast = .7,  vibrancy = 1., vibrancy_darkness = .1
+			contrast = .8,  vibrancy = 1., vibrancy_darkness = .2
 		},
-		shadow = { enabled = true, range = 40, render_power = 3, color = 0x40080808 },
-		glow = { enabled = false, range = 8, render_power = 4, color = 0xee33ccff }
+		shadow = { enabled = false, range = 24, render_power = 3, color = 0x88888888 }, -- argb
+		glow = { enabled = true, range = 16, render_power = 3, color = 0x77888888 }
 	}
 })
 
