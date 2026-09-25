@@ -1,34 +1,34 @@
 :root {
-	--text-primary: rgba(220, 225, 255, 0.56);
-	--text-disabled: rgba(220, 225, 255, 0.35);
-	--accent-primary: rgba(200, 200, 255, 0.72);
+	--text-primary: rgba(220, 220, 220, 0.56);
+	--text-disabled: rgba(220, 220, 220, 0.35);
+	--accent-primary: rgba(200, 200, 200, 0.72);
 	--accent-critical: rgba(255, 120, 120, 0.9);
 
-	--cc-bg: rgba(20, 20, 25, 0.8);
+	--cc-bg: rgba(20, 20, 20, 0.3);
 	--panel-bg-layer-top: linear-gradient(
 		to bottom,
-		rgba(20, 20, 25, 0.7) 0%,
-		rgba(20, 20, 25, 0) 100%
+		rgba(20, 20, 20, 0.7) 0%,
+		rgba(20, 20, 20, 0) 100%
 	);
 	--panel-bg-layer-angled: linear-gradient(
 		135deg,
-		rgba(20, 20, 25, 0.3) 0%,
-		rgba(20, 20, 25, 0) 20%,
-		rgba(20, 20, 25, 0) 80%,
-		rgba(20, 20, 25, 0.3) 100%
+		rgba(20, 20, 20, 0.3) 0%,
+		rgba(20, 20, 20, 0) 20%,
+		rgba(20, 20, 20, 0) 80%,
+		rgba(20, 20, 20, 0.3) 100%
 	);
-	--panel-bg-base: rgba(20, 20, 25, 0.45);
+	--panel-bg-base: rgba(20, 20, 20, 0.45);
 	--noti-border-color: rgba(255, 255, 255, 0.15);
-	--noti-bg: 20, 20, 25;
+	--noti-bg: 20, 20, 20;
 	--noti-bg-alpha: 0.5;
-	--noti-bg-darker: rgb(20, 20, 25);
+	--noti-bg-darker: rgb(20, 20, 20);
 	--noti-bg-hover: rgba(255, 255, 255, 0.08);
-	--noti-bg-focus: rgba(200, 200, 255, 0.18);
-	--noti-close-bg: rgba(20, 20, 25, 0.7);
-	--noti-close-bg-hover: rgba(200, 200, 255, 0.25);
+	--noti-bg-focus: rgba(200, 200, 200, 0.18);
+	--noti-close-bg: rgba(20, 20, 20, 0.7);
+	--noti-close-bg-hover: rgba(200, 200, 200, 0.25);
 	--text-color: var(--text-primary);
 	--text-color-disabled: var(--text-disabled);
-	--bg-critical: linear-gradient(180deg, rgba(255, 120, 120, 0.2), rgba(20, 20, 25, 0.55));
+	--bg-critical: linear-gradient(180deg, rgba(255, 120, 120, 0.2), rgba(20, 20, 20, 0.55));
 	--notification-icon-size: 32px;
 	--notification-app-icon-size: 20px;
 	--border: 1px solid var(--noti-border-color);
@@ -106,7 +106,7 @@ button:hover {
 }
 
 .notification-group.collapsed:hover .notification-row:not(:only-child) .notification {
-	background: var(--panel-bg-layer-top), var(--panel-bg-layer-angled), rgba(20, 20, 25, 0.55);
+	background: var(--panel-bg-layer-top), var(--panel-bg-layer-angled), rgba(20, 20, 20, 0.55);
 }
 
 .notification-row .notification-background .notification .notification-default-action {
